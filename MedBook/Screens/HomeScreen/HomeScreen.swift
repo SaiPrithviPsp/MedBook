@@ -12,7 +12,9 @@ struct HomeScreen: View {
     @StateObject private var viewModel = HomeViewModel()
     
     enum SortOption: String {
-        case title, year, hits
+        case title = "Title"
+        case year = "Year"
+        case hits = "Hits"
     }
     
     @State private var selectedSort: SortOption = .title
