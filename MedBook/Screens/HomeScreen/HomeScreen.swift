@@ -20,9 +20,7 @@ struct HomeScreen: View {
                 searchBar
             }
             .padding(.horizontal)
-            
             sortOptions
-            
             booksList
             
             Spacer()
