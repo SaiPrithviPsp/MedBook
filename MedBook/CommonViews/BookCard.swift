@@ -45,7 +45,7 @@ struct BookCard: View {
     @ViewBuilder
     private var imageView: some View {
         if let imageId = book.coverI {
-            AsyncImage(url: URL(string: getUrl(for: imageId))) { image in
+            CachedAsyncImage(url: URL(string: getUrl(for: imageId))) { image in
                image
                    .resizable()
                    .aspectRatio(contentMode: .fill)
@@ -97,8 +97,6 @@ struct BookCard: View {
     }
 
     private func getUrl(for bookId: Int) -> String {
-        let url = "https://covers.openlibrary.org/b/id/\(bookId)-M.jpg"
-        print(url)
-        return url
+        return "https://covers.openlibrary.org/b/id/\(bookId)-M.jpg"
     }
 }

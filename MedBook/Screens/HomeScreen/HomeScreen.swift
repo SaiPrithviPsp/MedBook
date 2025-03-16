@@ -127,7 +127,7 @@ struct HomeScreen: View {
                         .onAppear {
                             viewModel.loadMoreBooksIfNeeded(currentItem: index)
                         }
-                        .id(book)
+                        .id(book.key)
                 }
                 
                 if viewModel.isLoading {
@@ -138,5 +138,6 @@ struct HomeScreen: View {
             }
             .padding(.vertical)
         }
+        .scrollDismissesKeyboard(.immediately)
     }
 }

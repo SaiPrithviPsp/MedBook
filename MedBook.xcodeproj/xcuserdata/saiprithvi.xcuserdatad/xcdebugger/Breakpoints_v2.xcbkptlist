@@ -14,8 +14,8 @@
             filePath = "MedBook/Screens/HomeScreen/HomeViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
             landmarkName = "HomeViewModel"
             landmarkType = "3">
          </BreakpointContent>
@@ -30,9 +30,9 @@
             filePath = "MedBook/Screens/HomeScreen/HomeViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "resetAndSearch()"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "setupSearchDebounce()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

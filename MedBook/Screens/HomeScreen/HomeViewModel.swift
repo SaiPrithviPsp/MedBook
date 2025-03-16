@@ -37,6 +37,7 @@ final class HomeViewModel: ObservableObject {
     
     init(homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
         self.networkService = homeNetworkService
+        setupSearchDebounce()
     }
     
     func logout() {
@@ -81,8 +82,8 @@ final class HomeViewModel: ObservableObject {
     }
     
     func loadMoreBooksIfNeeded(currentItem index: Int) {
-        let thresholdIndex = books.count - 3
-        if index == thresholdIndex {
+        let thresholdIndex = books.count - 5
+        if index == thresholdIndex && !isLoading && hasMoreBooks {
             searchBooks(for: searchText)
         }
     }
