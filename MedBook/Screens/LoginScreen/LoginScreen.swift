@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    @EnvironmentObject var authHelper: AuthHelper
     @StateObject private var viewModel = LoginViewModel()
     @EnvironmentObject var router: RouterViewModel
     
