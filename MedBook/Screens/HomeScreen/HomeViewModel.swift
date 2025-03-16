@@ -12,14 +12,23 @@ final class HomeViewModel: ObservableObject {
     let networkService: HomeNetworkServiceProtocol
     let nextNavigationStep = PassthroughSubject<AppRoute, Never>()
     
-    @Published var searchText: String = "GAME"
+    @Published var searchText: String = "" {
+        didSet {
+            if searchText.count >= 3 {
+                searchBooks()
+            }
+        }
+    }
+    
+    @Published var books: [Book] = []
+    @Published var isLoading: Bool = false
     
     init(homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
         self.networkService = homeNetworkService
     }
 
     func onViewAppear() {
-        searchBooks() // todo: remove this
+        // Removed initial search call
     }
     
     func logout() {
@@ -28,12 +37,17 @@ final class HomeViewModel: ObservableObject {
     }
     
     func searchBooks() {
+        isLoading = true
         networkService.fetchBooks(query: searchText, limit: 10, offset: 0) { [weak self] result in
-            switch result {
-                case .success(let response):
-                    print(response)
-                case .failure(let error):
-                    print("Error: \(error.localizedDescription)")   
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                    case .success(let response):
+                        self?.books = response.docs
+                    case .failure(let error):
+                        print("Error: \(error.localizedDescription)")
+                        self?.books = []
+                }
             }
         }
     }

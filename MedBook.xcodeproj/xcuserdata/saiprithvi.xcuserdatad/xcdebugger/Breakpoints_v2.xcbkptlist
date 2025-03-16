@@ -7,63 +7,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B6C94CD9-6699-45FE-BB21-A7A5FBC36321"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MedBook/Network/HomeNetworkService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "fetchBooks(query:limit:offset:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AB4DE5B9-BA4B-44B6-9BDF-5A44EC332C3A"
+            uuid = "9038FCED-2462-4595-B014-6E0AC8EE6A44"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MedBook/Network/NetworkManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
             landmarkName = "execute(_:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "AB4DE5B9-BA4B-44B6-9BDF-5A44EC332C3A - fae424cfab95d8af"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MedBook.NetworkManager.execute&lt;&#x3c4;_0_0 where &#x3c4;_0_0: MedBook.APIRequest&gt;(_: &#x3c4;_0_0, completion: (Swift.Result&lt;&#x3c4;_0_0.Response, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "MedBook.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/saiprithvi/Desktop/Projects/MedBook/MedBook/Network/NetworkManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26">
-               </Location>
-               <Location
-                  uuid = "AB4DE5B9-BA4B-44B6-9BDF-5A44EC332C3A - 63b5b0f57b8343d2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in MedBook.NetworkManager.execute&lt;&#x3c4;_0_0 where &#x3c4;_0_0: MedBook.APIRequest&gt;(_: &#x3c4;_0_0, completion: (Swift.Result&lt;&#x3c4;_0_0.Response, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "MedBook.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/saiprithvi/Desktop/Projects/MedBook/MedBook/Network/NetworkManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F7287EF9-35E2-4026-A8BA-EE0D02424ED0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MedBook/Screens/LoginScreen/LoginViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "didTapLoginButton()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

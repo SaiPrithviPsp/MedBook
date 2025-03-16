@@ -56,13 +56,5 @@ struct Book: Decodable {
     let ratingsAverage: Double?
     let ratingsCount: Int?
     let authorName: [String]?
-    let coverId: Int?
-    
-    enum CodingKeys: String, CodingKey {
-        case title
-        case ratingsAverage = "ratings_average"
-        case ratingsCount = "ratings_count"
-        case authorName = "author_name"
-        case coverId = "cover_i"
-    }
+    let coverI: Int?
 } 
