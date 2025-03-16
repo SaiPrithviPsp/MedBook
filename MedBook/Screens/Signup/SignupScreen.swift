@@ -12,8 +12,8 @@ struct SignupScreen: View {
     @EnvironmentObject var router: RouterViewModel
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
+            ScrollView {
                 Text("Welcome")
                     .font(.title)
                     .fontWeight(.bold)
@@ -94,15 +94,16 @@ struct SignupScreen: View {
                 }
                 .padding(.bottom, 16)
                 
-                PrimaryCta(text: "Sign up", rightIcon: Image(systemName: "arrow.right"), isEnabled: viewModel.isPrimaryCtaEnabled) {
-                    viewModel.didTapSignUpButton()
-                }
-                .padding()
+                
+            }
+            .padding()
+            
+            PrimaryCta(text: "Sign up", rightIcon: Image(systemName: "arrow.right"), isEnabled: viewModel.isPrimaryCtaEnabled) {
+                viewModel.didTapSignUpButton()
             }
             .padding()
         }
         .background(Color.primaryBgColor)
-        .navigationTitle("Sign up")
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
