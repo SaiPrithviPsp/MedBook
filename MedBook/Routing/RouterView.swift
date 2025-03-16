@@ -17,10 +17,6 @@ struct RouterView: View {
                     switch route {
                         case .home:
                             HomeScreen()
-                        case .detail(let message):
-                            DetailView(message: message)
-                        case .settings:
-                            SettingsView()
                         case .login:
                             LoginScreen()
                         case .landing:
