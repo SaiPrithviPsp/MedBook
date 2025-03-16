@@ -11,7 +11,7 @@ struct HomeScreen: View {
     @EnvironmentObject var router: RouterViewModel
     @StateObject private var viewModel = HomeViewModel()
     
-    enum SortOption {
+    enum SortOption: String {
         case title, year, hits
     }
     
@@ -19,108 +19,17 @@ struct HomeScreen: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            // Header
-            HStack {
-                // Logo
-                HStack(spacing: 4) {
-                    Image(systemName: "books.vertical.fill")
-                        .font(.title)
-                    Text("MedBook")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                }
-                
-                Spacer()
-                
-                // Right buttons
-                HStack(spacing: 16) {
-                    Button(action: {
-                        // TODO: Implement bookmark action
-                    }) {
-                        Image(systemName: "bookmark")
-                            .font(.title3)
-                            .foregroundColor(.black)
-                    }
-                    
-                    Button(action: {
-                        viewModel.logout()
-                    }) {
-                        Image(systemName: "xmark")
-                            .font(.title3)
-                            .foregroundColor(.red)
-                    }
-                }
-            }
-            .padding(.horizontal)
+            header
             
-            // Title and Search
             VStack(alignment: .leading, spacing: 16) {
-                Text("Which topic interests\nyou today?")
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                // Search Bar
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("Search for books", text: $viewModel.searchText)
-                        .textFieldStyle(PlainTextFieldStyle())
-                    if !viewModel.searchText.isEmpty {
-                        Button(action: {
-                            viewModel.searchText = ""
-                        }) {
-                            Image(systemName: "xmark")
-                                .foregroundColor(.gray)
-                        }
-                    }
-                }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
+                title
+                searchBar
             }
             .padding(.horizontal)
             
-            // Sort Options
-            if !viewModel.books.isEmpty {
-                HStack(spacing: 16) {
-                    Text("Sort By:")
-                        .foregroundColor(.gray)
-                    
-                    ForEach([SortOption.title, .average, .hits], id: \.self) { option in
-                        Button(action: {
-                            selectedSort = option
-                        }) {
-                            Text(option == .title ? "Title" : option == .average ? "Average" : "Hits")
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(selectedSort == option ? Color.gray.opacity(0.2) : Color.clear)
-                                .cornerRadius(8)
-                        }
-                    }
-                }
-                .padding(.horizontal)
-            }
+            sortOptions
             
-            // Books List
-            ScrollView {
-                LazyVStack(spacing: 16) {
-                    ForEach(viewModel.books.indices, id: \.self) { index in
-                        let book = viewModel.books[index]
-                        BookCard(book: book)
-                            .padding(.horizontal)
-                            .onAppear {
-                                viewModel.loadMoreBooksIfNeeded(currentItem: index)
-                            }
-                    }
-                    
-                    if viewModel.isLoading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                }
-                .padding(.vertical)
-            }
+            booksList
             
             Spacer()
         }
@@ -130,6 +39,112 @@ struct HomeScreen: View {
         }
         .onAppear {
             viewModel.onViewAppear()
+        }
+    }
+    
+    private var header: some View {
+        HStack {
+            // Logo
+            HStack(spacing: 4) {
+                Image(systemName: "books.vertical.fill")
+                    .font(.title)
+                Text("MedBook")
+                    .font(.title2)
+                    .fontWeight(.bold)
+            }
+            
+            Spacer()
+            
+            // Right buttons
+            HStack(spacing: 16) {
+                Button(action: {
+                    // TODO: Implement bookmark action
+                }) {
+                    Image(systemName: "bookmark")
+                        .font(.title3)
+                        .foregroundColor(.black)
+                }
+                
+                Button(action: {
+                    viewModel.logout()
+                }) {
+                    Image(systemName: "xmark")
+                        .font(.title3)
+                        .foregroundColor(.red)
+                }
+            }
+        }
+        .padding(.horizontal)
+    }
+    
+    private var title: some View {
+        Text("Which topic interests\nyou today?")
+            .font(.title)
+            .fontWeight(.bold)
+    }
+    
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.gray)
+            TextField("Search for books", text: $viewModel.searchText)
+                .textFieldStyle(PlainTextFieldStyle())
+            if !viewModel.searchText.isEmpty {
+                Button(action: {
+                    viewModel.searchText = ""
+                }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.gray)
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+    }
+    
+    @ViewBuilder
+    private var sortOptions: some View {
+        if !viewModel.books.isEmpty {
+            HStack(spacing: 16) {
+                Text("Sort By:")
+                    .foregroundColor(.gray)
+                
+                ForEach([SortOption.title, .year, .hits], id: \.self) { option in
+                    Button(action: {
+                        selectedSort = option
+                    }) {
+                        Text(option.rawValue)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(selectedSort == option ? Color.gray.opacity(0.2) : Color.clear)
+                            .cornerRadius(8)
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+    
+    private var booksList: some View {
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                ForEach(viewModel.books.indices, id: \.self) { index in
+                    let book = viewModel.books[index]
+                    BookCard(book: book)
+                        .padding(.horizontal)
+                        .onAppear {
+                            viewModel.loadMoreBooksIfNeeded(currentItem: index)
+                        }
+                }
+                
+                if viewModel.isLoading {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+            }
+            .padding(.vertical)
         }
     }
 }
