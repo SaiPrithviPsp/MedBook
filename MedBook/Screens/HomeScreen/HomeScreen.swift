@@ -30,9 +30,6 @@ struct HomeScreen: View {
         .onReceive(viewModel.nextNavigationStep) { newValue in
             router.navigate(to: newValue)
         }
-        .onAppear {
-            viewModel.onViewAppear()
-        }
     }
     
     private var header: some View {
@@ -60,7 +57,7 @@ struct HomeScreen: View {
                 Button(action: {
                     viewModel.logout()
                 }) {
-                    Image(systemName: "xmark")
+                    Image(systemName: "rectangle.portrait.and.arrow.right")
                         .font(.title3)
                         .foregroundColor(.red)
                 }

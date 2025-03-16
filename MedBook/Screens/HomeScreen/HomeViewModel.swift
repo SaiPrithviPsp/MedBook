@@ -38,10 +38,6 @@ final class HomeViewModel: ObservableObject {
     init(homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
         self.networkService = homeNetworkService
     }
-
-    func onViewAppear() {
-        // Removed initial search call
-    }
     
     func logout() {
         AuthHelper.shared.logout()
