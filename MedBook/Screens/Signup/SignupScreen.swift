@@ -40,6 +40,12 @@ struct SignupScreen: View {
                             .font(.caption)
                     }
                     
+                    if let signUpError = viewModel.signUpError {
+                        Text(signUpError)
+                            .foregroundColor(.red)
+                            .padding(.vertical, 8)
+                    }
+                    
                     // Password requirements
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Password requirements:")
