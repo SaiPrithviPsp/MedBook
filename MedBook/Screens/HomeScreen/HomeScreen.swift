@@ -123,7 +123,7 @@ struct HomeScreen: View {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.books.indices, id: \.self) { index in
                     let book = viewModel.books[index]
-                    BookCard(book: book, viewModel: viewModel)
+                    BookCard(book: book)
                         .padding(.horizontal)
                         .onAppear {
                             viewModel.loadMoreBooksIfNeeded(currentItem: index)
@@ -144,7 +144,7 @@ struct HomeScreen: View {
 
 struct BookCard: View {
     let book: Book
-    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var bookmarkManager = BookmarkManager.shared
     
     var body: some View {
         HStack(spacing: 16) {
@@ -181,10 +181,10 @@ struct BookCard: View {
                     }
                     
                     Button(action: {
-                        viewModel.toggleBookmark(for: book)
+                        bookmarkManager.toggleBookmark(for: book)
                     }) {
-                        Image(systemName: viewModel.isBookmarked(book) ? "bookmark.fill" : "bookmark")
-                            .foregroundColor(viewModel.isBookmarked(book) ? .blue : .gray)
+                        Image(systemName: bookmarkManager.isBookmarked(book) ? "bookmark.fill" : "bookmark")
+                            .foregroundColor(bookmarkManager.isBookmarked(book) ? .blue : .gray)
                     }
                 }
                 .font(.subheadline)

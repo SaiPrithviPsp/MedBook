@@ -44,7 +44,7 @@ struct BookmarkScreen: View {
             
             // Back button
             Button(action: {
-//                router.navigateBack()
+                router.goBack()
             }) {
                 Image(systemName: "xmark")
                     .font(.title3)
@@ -75,8 +75,8 @@ struct BookmarkScreen: View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.bookmarks, id: \.id) { bookmark in
-//                    BookCard(book: bookmark.toBook(), viewModel: viewModel)
-//                        .padding(.horizontal)
+                    BookCard(book: bookmark.toBook())
+                        .padding(.horizontal)
                 }
             }
             .padding(.vertical)

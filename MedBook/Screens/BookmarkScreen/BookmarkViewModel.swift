@@ -15,17 +15,4 @@ final class BookmarkViewModel: ObservableObject {
     func fetchBookmarks() {
         bookmarks = bookmarkManager.fetchBookmarks()
     }
-    
-    func isBookmarked(_ book: Book) -> Bool {
-        bookmarkManager.isBookmarked(book)
-    }
-    
-    func toggleBookmark(for book: Book) {
-        if isBookmarked(book) {
-            bookmarkManager.removeBookmark(book)
-        } else {
-            bookmarkManager.bookmarkBook(book)
-        }
-        fetchBookmarks()
-    }
 } 
