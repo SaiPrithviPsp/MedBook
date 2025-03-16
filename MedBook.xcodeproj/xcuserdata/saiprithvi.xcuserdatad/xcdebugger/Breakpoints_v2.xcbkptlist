@@ -7,32 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9038FCED-2462-4595-B014-6E0AC8EE6A44"
+            uuid = "02257DD4-100B-4C95-A2D7-23B7145EC956"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MedBook/Network/NetworkManager.swift"
+            filePath = "MedBook/Screens/HomeScreen/HomeViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "execute(_:completion:)"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "loadMoreBooksIfNeeded(currentItem:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F7287EF9-35E2-4026-A8BA-EE0D02424ED0"
-            shouldBeEnabled = "Yes"
+            uuid = "2C01368C-CE6B-4AB5-8AC3-041FBB8B37FC"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MedBook/Screens/LoginScreen/LoginViewModel.swift"
+            filePath = "MedBook/Screens/HomeScreen/HomeViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
-            landmarkName = "didTapLoginButton()"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "searchBooks()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

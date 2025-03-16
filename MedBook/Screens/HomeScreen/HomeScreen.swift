@@ -103,12 +103,23 @@ struct HomeScreen: View {
             
             // Books List
             ScrollView {
-                VStack(spacing: 16) {
+                LazyVStack(spacing: 16) {
                     ForEach(viewModel.books.indices, id: \.self) { index in
-                        BookCard(book: viewModel.books[index])
+                        let book = viewModel.books[index]
+                        BookCard(book: book)
                             .padding(.horizontal)
+                            .onAppear {
+                                viewModel.loadMoreBooksIfNeeded(currentItem: index)
+                            }
+                    }
+                    
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding()
                     }
                 }
+                .padding(.vertical)
             }
             
             Spacer()

@@ -15,13 +15,17 @@ final class HomeViewModel: ObservableObject {
     @Published var searchText: String = "" {
         didSet {
             if searchText.count >= 3 {
-                searchBooks()
+                resetAndSearch()
             }
         }
     }
     
     @Published var books: [Book] = []
     @Published var isLoading: Bool = false
+    @Published var hasMoreBooks: Bool = true
+    
+    private var currentOffset: Int = 0
+    private let booksPerPage: Int = 10
     
     init(homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
         self.networkService = homeNetworkService
@@ -36,17 +40,40 @@ final class HomeViewModel: ObservableObject {
         nextNavigationStep.send(.landing)
     }
     
+    private func resetAndSearch() {
+        books = []
+        currentOffset = 0
+        hasMoreBooks = true
+        searchBooks()
+    }
+    
+    func loadMoreBooksIfNeeded(currentItem index: Int) {
+        let thresholdIndex = books.count - 3
+        if index == thresholdIndex {
+            searchBooks()
+        }
+    }
+    
     func searchBooks() {
+        guard !isLoading && hasMoreBooks else { return }
+        
         isLoading = true
-        networkService.fetchBooks(query: searchText, limit: 10, offset: 0) { [weak self] result in
+        networkService.fetchBooks(query: searchText, limit: booksPerPage, offset: currentOffset) { [weak self] result in
             DispatchQueue.main.async {
-                self?.isLoading = false
+                guard let self = self else { return }
+                self.isLoading = false
+                
                 switch result {
                     case .success(let response):
-                        self?.books = response.docs
+                        let newBooks = response.docs
+                        self.books.append(contentsOf: newBooks)
+                        self.currentOffset += newBooks.count
+                        self.hasMoreBooks = newBooks.count == self.booksPerPage
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")
-                        self?.books = []
+                        if self.currentOffset == 0 {
+                            self.books = []
+                        }
                 }
             }
         }
