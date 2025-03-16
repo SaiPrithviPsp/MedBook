@@ -56,6 +56,7 @@ struct LoginScreen: View {
             .padding()
         }
         .padding()
+        .background(Color.white)
         .onReceive(viewModel.nextNavigationStep) { newValue in
             router.navigate(to: newValue)
         }

@@ -93,6 +93,7 @@ struct SignupScreen: View {
             .padding()
         }
         .padding()
+        .background(Color.white)
         .navigationTitle("Sign up")
         .onAppear {
             viewModel.onViewAppear()

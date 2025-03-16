@@ -27,6 +27,7 @@ struct LandingScreen: View {
             }
             .padding()
         }
+        .background(Color.white)
         .navigationBarBackButtonHidden()
     }
 }
