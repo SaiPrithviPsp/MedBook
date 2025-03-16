@@ -9,52 +9,68 @@ import SwiftUI
 
 struct HomeScreen: View {
     @EnvironmentObject var router: RouterViewModel
+    @StateObject private var viewModel = HomeViewModel()
 
     var body: some View {
-        VStack {
-            Text("Home Screen")
-            Button("Go to Detail") {
-                router.navigate(to: .detail("Hello from Home!"))
+        VStack(alignment: .leading, spacing: 24) {
+            // Header
+            HStack {
+                // Logo
+                HStack(spacing: 4) {
+                    Image(systemName: "books.vertical.fill")
+                        .font(.title)
+                    Text("MedBook")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                }
+                
+                Spacer()
+                
+                // Right buttons
+                HStack(spacing: 16) {
+                    Button(action: {
+                        // TODO: Implement bookmark action
+                    }) {
+                        Image(systemName: "bookmark")
+                            .font(.title3)
+                            .foregroundColor(.black)
+                    }
+                    
+                    Button(action: {
+                        viewModel.logout()
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.title3)
+                            .foregroundColor(.red)
+                    }
+                }
             }
-            Button("Go to Settings") {
-                router.navigate(to: .settings)
+            .padding(.horizontal)
+            
+            // Title and Search
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Which topic interests\nyou today?")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                // Search Bar
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.gray)
+                    TextField("Search for books", text: $viewModel.searchText)
+                        .textFieldStyle(PlainTextFieldStyle())
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
             }
-            Button("Logout") {
-                AuthHelper.shared.logout()
-                router.navigate(to: .landing)
-            }
+            .padding(.horizontal)
+            
+            Spacer()
         }
-        .navigationTitle("Home")
-        .navigationBarBackButtonHidden()
-    }
-}
-
-struct DetailView: View {
-    let message: String
-    @EnvironmentObject var router: RouterViewModel
-
-    var body: some View {
-        VStack {
-            Text("Detail Screen")
-            Text(message)
-            Button("Go Back") {
-                router.goBack()
-            }
+        .navigationBarHidden(true)
+        .onReceive(viewModel.nextNavigationStep) { newValue in
+            router.navigate(to: newValue)
         }
-        .navigationTitle("Detail")
-    }
-}
-
-struct SettingsView: View {
-    @EnvironmentObject var router: RouterViewModel
-
-    var body: some View {
-        VStack {
-            Text("Settings Screen")
-            Button("Reset Navigation") {
-                router.resetNavigation()
-            }
-        }
-        .navigationTitle("Settings")
     }
 }
