@@ -34,6 +34,8 @@ final class HomeViewModel: ObservableObject {
     private var currentOffset: Int = 0
     private let booksPerPage: Int = 10
     
+    private var cancellables = Set<AnyCancellable>()
+    
     init(homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
         self.networkService = homeNetworkService
     }
@@ -47,12 +49,23 @@ final class HomeViewModel: ObservableObject {
         nextNavigationStep.send(.landing)
     }
     
+    private func setupSearchDebounce() {
+        $searchText
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main) // Delay API call
+            .removeDuplicates() // Prevent duplicate calls
+            .sink { [weak self] text in
+                guard !text.isEmpty else { return }
+                self?.searchBooks(for: text)
+            }
+            .store(in: &cancellables)
+    }
+    
     private func resetAndSearch() {
         books = []
         unsortedBooks = []
         currentOffset = 0
         hasMoreBooks = true
-        searchBooks()
+        searchBooks(for: searchText)
     }
     
     private func sortBooks() {
@@ -75,15 +88,15 @@ final class HomeViewModel: ObservableObject {
     func loadMoreBooksIfNeeded(currentItem index: Int) {
         let thresholdIndex = books.count - 3
         if index == thresholdIndex {
-            searchBooks()
+            searchBooks(for: searchText)
         }
     }
     
-    func searchBooks() {
+    func searchBooks(for text: String) {
         guard !isLoading && hasMoreBooks else { return }
         
         isLoading = true
-        networkService.fetchBooks(query: searchText, limit: booksPerPage, offset: currentOffset) { [weak self] result in
+        networkService.fetchBooks(query: text, limit: booksPerPage, offset: currentOffset) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.isLoading = false
