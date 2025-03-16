@@ -26,6 +26,7 @@ struct HomeScreen: View {
             Spacer()
         }
         .navigationBarHidden(true)
+        .background(Color.primaryBgColor)
         .onReceive(viewModel.nextNavigationStep) { newValue in
             router.navigate(to: newValue)
         }
@@ -47,12 +48,11 @@ struct HomeScreen: View {
             
             Spacer()
             
-            // Right buttons
             HStack(spacing: 16) {
                 Button(action: {
-                    // TODO: Implement bookmark action
+                    router.navigate(to: .bookmarks)
                 }) {
-                    Image(systemName: "bookmark")
+                    Image(systemName: "bookmark.fill")
                         .font(.title3)
                         .foregroundColor(.black)
                 }
@@ -100,13 +100,15 @@ struct HomeScreen: View {
         if !viewModel.books.isEmpty {
             HStack(spacing: 16) {
                 Text("Sort By:")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.black)
                 
                 ForEach([SortOption.title, .year, .hits], id: \.self) { option in
                     Button(action: {
                         viewModel.sortOption = option
                     }) {
                         Text(option.rawValue)
+                            .foregroundStyle(Color.black)
+                            .fontWeight(.bold)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
                             .background(viewModel.sortOption == option ? Color.gray.opacity(0.2) : Color.clear)
@@ -139,74 +141,5 @@ struct HomeScreen: View {
             }
             .padding(.vertical)
         }
-    }
-}
-
-struct BookCard: View {
-    let book: Book
-    
-    var body: some View {
-        HStack(spacing: 16) {
-            bookImage
-            
-            // Book Details
-            VStack(alignment: .leading, spacing: 4) {
-                Text(book.title)
-                    .font(.headline)
-                    .lineLimit(2)
-                
-                Text(book.authorName?.first ?? "")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                
-               HStack {
-                   // Rating
-                   if let ratingsAverage = book.ratingsAverage {
-                       Image(systemName: "star.fill")
-                           .foregroundColor(.yellow)
-                       Text(String(format: "%.1f", ratingsAverage))
-                   }
-                   
-                   Spacer()
-                   
-                   if let ratingsCount = book.ratingsCount {
-                       Image(systemName: "eye.fill")
-                           .foregroundColor(.orange)
-                       Text("\(ratingsCount)")
-                   }
-                   
-                   if let yearPublished = book.firstPublishYear {
-                       Text(String(yearPublished))
-                   }
-               }
-               .font(.subheadline)
-            }
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-    }
-
-    @ViewBuilder
-    private var bookImage: some View {
-        if let imageId = book.coverI {
-            AsyncImage(url: URL(string: getUrl(for: imageId))) { image in
-               image
-                   .resizable()
-                   .aspectRatio(contentMode: .fill)
-           } placeholder: {
-               Color.gray.opacity(0.2)
-           }
-           .frame(width: 80, height: 80)
-           .cornerRadius(8)
-        }
-            
-    }
-
-    private func getUrl(for bookId: Int) -> String {
-        let url = "https://covers.openlibrary.org/b/id/\(bookId)-M.jpg"
-        print(url)
-        return url
     }
 }

@@ -26,6 +26,7 @@ final class LoginViewModel: ObservableObject {
     @Published var isPrimaryCtaEnabled: Bool = false
     @Published var emailError: String?
     @Published var passwordError: String?
+    @Published var loginError: String?
     let nextNavigationStep = PassthroughSubject<AppRoute, Never>()
     
     init(userNetworkService: UserNetworkServiceProtocol = UserNetworkService()) {
@@ -60,24 +61,18 @@ final class LoginViewModel: ObservableObject {
     func didTapLoginButton() {
         guard isPrimaryCtaEnabled else { return }
         
-        // Here you would typically make a network call to authenticate the user
-        // For now, we'll just verify against stored credentials
-        do {
-            if let data = try? KeychainHelper.standard.read(service: "MedBook", account: email),
-               let savedCredentials = try? JSONDecoder().decode(UserCredentials.self, from: data) {
-                if savedCredentials.password == password {
-                    print("Login successful")
-                    AuthHelper.shared.login()
-                    nextNavigationStep.send(.home)
-                    // Handle successful login (e.g., navigate to main screen)
-                } else {
-                    print("Invalid credentials")
-                    // Handle invalid credentials
-                }
-            } else {
-                print("User not found")
-                // Handle user not found
-            }
+        let loginResult = AuthHelper.shared.login(email: email, password: password)
+        
+        switch loginResult {
+            case .success:
+                loginError = nil
+                nextNavigationStep.send(.home)
+            case .invalidCredentials:
+                loginError = "Invalid password"
+            case .userNotFound:
+                loginError = "No account found with this email"
+            case .error(let error):
+                loginError = "An error occurred: \(error.localizedDescription)"
         }
     }
 } 

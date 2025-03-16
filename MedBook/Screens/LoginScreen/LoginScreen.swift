@@ -47,6 +47,13 @@ struct LoginScreen: View {
                 }
             }
             
+            if let loginError = viewModel.loginError {
+                Text(loginError)
+                    .foregroundColor(.red)
+                    .font(.caption)
+                    .padding(.top, 8)
+            }
+            
             Spacer()
             
             PrimaryCta(text: "Login", rightIcon: Image(systemName: "arrow.right"), isEnabled: viewModel.isPrimaryCtaEnabled) {
@@ -55,7 +62,7 @@ struct LoginScreen: View {
             .padding()
         }
         .padding()
-        .background(Color.white)
+        .background(Color.primaryBgColor)
         .onReceive(viewModel.nextNavigationStep) { newValue in
             router.navigate(to: newValue)
         }

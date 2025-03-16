@@ -28,6 +28,7 @@ final class SignUpViewModel: ObservableObject {
     @Published var isPrimaryCtaEnabled: Bool = false
     @Published var emailError: String?
     @Published var passwordError: String?
+    @Published var signUpError: String?
     
     // Password requirement states
     @Published var hasMinLength: Bool = false
@@ -90,14 +91,17 @@ final class SignUpViewModel: ObservableObject {
         guard isPrimaryCtaEnabled else { return }
         
         UserDefaults.standard.set(selectedCountry, forKey: "selectedCountry")
-        let credentials = UserCredentials(email: email, password: password)
-        do {
-            let data = try JSONEncoder().encode(credentials)
-            try KeychainHelper.standard.save(data, service: "MedBook", account: email)
-            AuthHelper.shared.login()
+        signUpError = nil // Reset any previous error
+        
+        let signUpResult = AuthHelper.shared.signup(email: email, password: password)
+        
+        switch signUpResult {
+        case .success:
             nextNavigationStep.send(.home)
-        } catch {
-            print("Error saving to Keychain: \(error.localizedDescription)")
+        case .userAlreadyExists:
+            signUpError = "User already exists"
+        case .error(let error):
+            signUpError = error.localizedDescription
         }
     }
     

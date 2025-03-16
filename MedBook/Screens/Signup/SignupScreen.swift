@@ -40,6 +40,12 @@ struct SignupScreen: View {
                             .font(.caption)
                     }
                     
+                    if let signUpError = viewModel.signUpError {
+                        Text(signUpError)
+                            .foregroundColor(.red)
+                            .padding(.vertical, 8)
+                    }
+                    
                     // Password requirements
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Password requirements:")
@@ -70,6 +76,8 @@ struct SignupScreen: View {
                     .padding(.top, 8)
                 }
                 
+                Spacer()
+                
                 VStack(alignment: .leading, spacing: 8) {
                     if !viewModel.countryList.isEmpty {
                         Picker("Country", selection: $viewModel.selectedCountry) {
@@ -85,15 +93,13 @@ struct SignupScreen: View {
             }
             .padding(.bottom, 16)
             
-            Spacer()
-            
             PrimaryCta(text: "Sign up", rightIcon: Image(systemName: "arrow.right"), isEnabled: viewModel.isPrimaryCtaEnabled) {
                 viewModel.didTapSignUpButton()
             }
             .padding()
         }
         .padding()
-        .background(Color.white)
+        .background(Color.primaryBgColor)
         .navigationTitle("Sign up")
         .onAppear {
             viewModel.onViewAppear()

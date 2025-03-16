@@ -23,6 +23,8 @@ struct RouterView: View {
                             LandingScreen()
                         case .signup:
                             SignupScreen()
+                        case .bookmarks:
+                            BookmarkScreen()
                     }
                 }
         }

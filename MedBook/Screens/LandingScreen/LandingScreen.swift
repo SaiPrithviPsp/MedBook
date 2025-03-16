@@ -11,23 +11,30 @@ struct LandingScreen: View {
     @EnvironmentObject var router: RouterViewModel
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
             Text("MedBook")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding()
+                .padding(.top, 80)
+            Spacer()
+            Image(systemName: "book")
+                .resizable()
+                .frame(width: 120, height: 100)
             Spacer()
             HStack {
                 PrimaryCta(text: "Singup") {
                     router.navigate(to: .signup)
                 }
+                Spacer().frame(width: 20)
                 PrimaryCta(text: "Login") {
                     router.navigate(to: .login)
                 }
             }
-            .padding()
+            .padding(.horizontal, 40)
+            .padding(.bottom, 40)
         }
-        .background(Color.white)
+        .background(Color.primaryBgColor)
         .navigationBarBackButtonHidden()
     }
 }
