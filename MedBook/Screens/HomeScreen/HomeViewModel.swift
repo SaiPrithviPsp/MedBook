@@ -11,6 +11,7 @@ import Combine
 final class HomeViewModel: ObservableObject {
     let networkService: HomeNetworkServiceProtocol
     let nextNavigationStep = PassthroughSubject<AppRoute, Never>()
+    private let bookmarkManager = BookmarkManager.shared
     
     @Published var searchText: String = "" {
         didSet {
@@ -103,6 +104,21 @@ final class HomeViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    // MARK: - Bookmark Methods
+    
+    func isBookmarked(_ book: Book) -> Bool {
+        bookmarkManager.isBookmarked(book)
+    }
+    
+    func toggleBookmark(for book: Book) {
+        if isBookmarked(book) {
+            bookmarkManager.removeBookmark(book)
+        } else {
+            bookmarkManager.bookmarkBook(book)
+        }
+        objectWillChange.send()
     }
 } 
 

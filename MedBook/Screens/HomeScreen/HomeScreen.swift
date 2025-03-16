@@ -50,9 +50,9 @@ struct HomeScreen: View {
             // Right buttons
             HStack(spacing: 16) {
                 Button(action: {
-                    // TODO: Implement bookmark action
+                    router.navigate(to: .landing) // update to bookmark screen
                 }) {
-                    Image(systemName: "bookmark")
+                    Image(systemName: "bookmark.fill")
                         .font(.title3)
                         .foregroundColor(.black)
                 }
@@ -123,7 +123,7 @@ struct HomeScreen: View {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.books.indices, id: \.self) { index in
                     let book = viewModel.books[index]
-                    BookCard(book: book)
+                    BookCard(book: book, viewModel: viewModel)
                         .padding(.horizontal)
                         .onAppear {
                             viewModel.loadMoreBooksIfNeeded(currentItem: index)
@@ -144,6 +144,7 @@ struct HomeScreen: View {
 
 struct BookCard: View {
     let book: Book
+    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
         HStack(spacing: 16) {
@@ -159,27 +160,34 @@ struct BookCard: View {
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-               HStack {
-                   // Rating
-                   if let ratingsAverage = book.ratingsAverage {
-                       Image(systemName: "star.fill")
-                           .foregroundColor(.yellow)
-                       Text(String(format: "%.1f", ratingsAverage))
-                   }
-                   
-                   Spacer()
-                   
-                   if let ratingsCount = book.ratingsCount {
-                       Image(systemName: "eye.fill")
-                           .foregroundColor(.orange)
-                       Text("\(ratingsCount)")
-                   }
-                   
-                   if let yearPublished = book.firstPublishYear {
-                       Text(String(yearPublished))
-                   }
-               }
-               .font(.subheadline)
+                HStack {
+                    // Rating
+                    if let ratingsAverage = book.ratingsAverage {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                        Text(String(format: "%.1f", ratingsAverage))
+                    }
+                    
+                    Spacer()
+                    
+                    if let ratingsCount = book.ratingsCount {
+                        Image(systemName: "eye.fill")
+                            .foregroundColor(.orange)
+                        Text("\(ratingsCount)")
+                    }
+                    
+                    if let yearPublished = book.firstPublishYear {
+                        Text(String(yearPublished))
+                    }
+                    
+                    Button(action: {
+                        viewModel.toggleBookmark(for: book)
+                    }) {
+                        Image(systemName: viewModel.isBookmarked(book) ? "bookmark.fill" : "bookmark")
+                            .foregroundColor(viewModel.isBookmarked(book) ? .blue : .gray)
+                    }
+                }
+                .font(.subheadline)
             }
         }
         .padding()
