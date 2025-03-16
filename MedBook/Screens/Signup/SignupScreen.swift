@@ -39,12 +39,38 @@ struct SignupScreen: View {
                             .foregroundColor(.red)
                             .font(.caption)
                     }
+                    
+                    // Password requirements
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Password requirements:")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        
+                        HStack {
+                            Image(systemName: viewModel.hasMinLength ? "checkmark.square.fill" : "square")
+                                .foregroundColor(viewModel.hasMinLength ? .green : .gray)
+                            Text("At least 8 characters")
+                                .font(.caption)
+                        }
+                        
+                        HStack {
+                            Image(systemName: viewModel.hasUppercase ? "checkmark.square.fill" : "square")
+                                .foregroundColor(viewModel.hasUppercase ? .green : .gray)
+                            Text("Must contain an uppercase letter")
+                                .font(.caption)
+                        }
+                        
+                        HStack {
+                            Image(systemName: viewModel.hasSpecialCharacter ? "checkmark.square.fill" : "square")
+                                .foregroundColor(viewModel.hasSpecialCharacter ? .green : .gray)
+                            Text("Contains a special character")
+                                .font(.caption)
+                        }
+                    }
+                    .padding(.top, 8)
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Select your country")
-                        .font(.headline)
-                    
                     if !viewModel.countryList.isEmpty {
                         Picker("Country", selection: $viewModel.selectedCountry) {
                             ForEach(viewModel.countryList, id: \.self) { country in
@@ -59,12 +85,12 @@ struct SignupScreen: View {
             }
             .padding(.bottom, 16)
             
-            PrimaryCta(text: "Sign up", isEnabled: viewModel.isPrimaryCtaEnabled) {
+            Spacer()
+            
+            PrimaryCta(text: "Sign up", rightIcon: Image(systemName: "arrow.right"), isEnabled: viewModel.isPrimaryCtaEnabled) {
                 viewModel.didTapSignUpButton()
             }
-            .padding(.top, 8)
-            
-            Spacer()
+            .padding()
         }
         .padding()
         .navigationTitle("Sign up")
@@ -72,4 +98,8 @@ struct SignupScreen: View {
             viewModel.onViewAppear()
         }
     }
+}
+
+#Preview {
+    SignupScreen()
 }

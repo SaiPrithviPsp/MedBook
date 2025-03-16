@@ -48,19 +48,12 @@ struct LoginScreen: View {
                 }
             }
             
-            Button(action: {
-                viewModel.didTapLoginButton()
-            }) {
-                Text("Login")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(viewModel.isPrimaryCtaEnabled ? Color.blue : Color.gray)
-                    .cornerRadius(10)
-            }
-            .disabled(!viewModel.isPrimaryCtaEnabled)
-            
             Spacer()
+            
+            PrimaryCta(text: "Login", rightIcon: Image(systemName: "arrow.right"), isEnabled: viewModel.isPrimaryCtaEnabled) {
+                viewModel.didTapLoginButton()
+            }
+            .padding()
         }
         .padding()
         .onReceive(viewModel.nextNavigationStep) { newValue in

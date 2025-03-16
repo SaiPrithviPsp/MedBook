@@ -11,14 +11,21 @@ struct LandingScreen: View {
     @EnvironmentObject var router: RouterViewModel
     
     var body: some View {
-        VStack {
-            Text("Landing screen")
-            Button("login") {
-                router.navigate(to: .login)
+        VStack(alignment: .leading) {
+            Text("MedBook")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding()
+            Spacer()
+            HStack {
+                PrimaryCta(text: "Singup") {
+                    router.navigate(to: .signup)
+                }
+                PrimaryCta(text: "Login") {
+                    router.navigate(to: .login)
+                }
             }
-            Button("sign in") {
-                router.navigate(to: .signup)
-            }
+            .padding()
         }
         .navigationBarBackButtonHidden()
     }

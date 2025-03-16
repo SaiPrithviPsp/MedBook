@@ -32,6 +32,11 @@ final class SignUpViewModel: ObservableObject {
     @Published var emailError: String?
     @Published var passwordError: String?
     
+    // Password requirement states
+    @Published var hasMinLength: Bool = false
+    @Published var hasUppercase: Bool = false
+    @Published var hasSpecialCharacter: Bool = false
+    
     init(userNetworkService: UserNetworkServiceProtocol = UserNetworkService()) {
         self.networkService = userNetworkService
     }
@@ -52,19 +57,19 @@ final class SignUpViewModel: ObservableObject {
     private func validatePassword() {
         if password.isEmpty {
             passwordError = "Password is required"
+            hasMinLength = false
+            hasUppercase = false
+            hasSpecialCharacter = false
             return
         }
         
-        let hasMinLength = password.count >= 8
-        let hasNumber = password.contains(where: { $0.isNumber })
-        let hasUppercase = password.contains(where: { $0.isUppercase })
+        hasMinLength = password.count >= 8
+        hasUppercase = password.contains(where: { $0.isUppercase })
         let specialCharacters = CharacterSet(charactersIn: "!@#$%^&*()_+-=[]{}|;:,.<>?")
-        let hasSpecialCharacter = password.rangeOfCharacter(from: specialCharacters) != nil
+        hasSpecialCharacter = password.rangeOfCharacter(from: specialCharacters) != nil
         
         if !hasMinLength {
             passwordError = "Password must be at least 8 characters"
-        } else if !hasNumber {
-            passwordError = "Password must contain at least 1 number"
         } else if !hasUppercase {
             passwordError = "Password must contain at least 1 uppercase character"
         } else if !hasSpecialCharacter {

@@ -15,7 +15,7 @@ struct PrimaryCta: View {
     
     init(
         text: String,
-        rightIcon: Image? = Image(systemName: "arrow.right"),
+        rightIcon: Image? = nil,
         isEnabled: Bool = true,
         action: @escaping () -> Void
     ) {
@@ -45,7 +45,9 @@ struct PrimaryCta: View {
                     .fill(.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                            .stroke(
+                                isEnabled ? .black : .gray.opacity(0.3),
+                                lineWidth: 1)
                     )
             )
             .foregroundColor(isEnabled ? .black : .gray)
