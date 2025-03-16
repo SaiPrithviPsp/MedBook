@@ -128,6 +128,7 @@ struct HomeScreen: View {
                         .onAppear {
                             viewModel.loadMoreBooksIfNeeded(currentItem: index)
                         }
+                        .id(book)
                 }
                 
                 if viewModel.isLoading {

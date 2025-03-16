@@ -51,7 +51,7 @@ struct BookSearchResponse: Decodable {
     let docs: [Book]
 }
 
-struct Book: Decodable {
+struct Book: Decodable, Hashable {
     let title: String
     let ratingsAverage: Double?
     let ratingsCount: Int?
