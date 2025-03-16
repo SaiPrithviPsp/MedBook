@@ -16,19 +16,22 @@ struct BookCard: View {
             imageView
             
             VStack(alignment: .leading, spacing: 4) {
-                title
+                HStack {
+                    title
+                    Spacer()
+                    bookmakrButton
+                }
+                
                 authorName
                 
                 HStack {
-                    ratings
-                    Spacer()
-                    ratingCount
-                    
                     if let yearPublished = book.firstPublishYear {
                         Text(String(yearPublished))
                     }
                     
-                    bookmakrButton
+                    ratings
+                    Spacer()
+                    ratingCount
                 }
                 .font(.subheadline)
             }
