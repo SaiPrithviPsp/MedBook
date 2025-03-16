@@ -47,7 +47,6 @@ struct HomeScreen: View {
             
             Spacer()
             
-            // Right buttons
             HStack(spacing: 16) {
                 Button(action: {
                     router.navigate(to: .bookmarks)
@@ -139,82 +138,5 @@ struct HomeScreen: View {
             }
             .padding(.vertical)
         }
-    }
-}
-
-struct BookCard: View {
-    let book: Book
-    @ObservedObject var bookmarkManager = BookmarkManager.shared
-    
-    var body: some View {
-        HStack(spacing: 16) {
-            bookImage
-            
-            // Book Details
-            VStack(alignment: .leading, spacing: 4) {
-                Text(book.title)
-                    .font(.headline)
-                    .lineLimit(2)
-                
-                Text(book.authorName?.first ?? "")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                
-                HStack {
-                    // Rating
-                    if let ratingsAverage = book.ratingsAverage {
-                        Image(systemName: "star.fill")
-                            .foregroundColor(.yellow)
-                        Text(String(format: "%.1f", ratingsAverage))
-                    }
-                    
-                    Spacer()
-                    
-                    if let ratingsCount = book.ratingsCount {
-                        Image(systemName: "eye.fill")
-                            .foregroundColor(.orange)
-                        Text("\(ratingsCount)")
-                    }
-                    
-                    if let yearPublished = book.firstPublishYear {
-                        Text(String(yearPublished))
-                    }
-                    
-                    Button(action: {
-                        bookmarkManager.toggleBookmark(for: book)
-                    }) {
-                        Image(systemName: bookmarkManager.isBookmarked(book) ? "bookmark.fill" : "bookmark")
-                            .foregroundColor(bookmarkManager.isBookmarked(book) ? .blue : .gray)
-                    }
-                }
-                .font(.subheadline)
-            }
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-    }
-
-    @ViewBuilder
-    private var bookImage: some View {
-        if let imageId = book.coverI {
-            AsyncImage(url: URL(string: getUrl(for: imageId))) { image in
-               image
-                   .resizable()
-                   .aspectRatio(contentMode: .fill)
-           } placeholder: {
-               Color.gray.opacity(0.2)
-           }
-           .frame(width: 80, height: 80)
-           .cornerRadius(8)
-        }
-            
-    }
-
-    private func getUrl(for bookId: Int) -> String {
-        let url = "https://covers.openlibrary.org/b/id/\(bookId)-M.jpg"
-        print(url)
-        return url
     }
 }
