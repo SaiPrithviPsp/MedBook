@@ -83,7 +83,16 @@ final class SignUpViewModel: ObservableObject {
     }
     
     func didTapSignUpButton() {
+        guard isPrimaryCtaEnabled else { return }
         
+        UserDefaults.standard.set(selectedCountry, forKey: "selectedCountry")
+        let credentials = UserCredentials(email: email, password: password)
+        do {
+            let data = try JSONEncoder().encode(credentials)
+            try KeychainHelper.standard.save(data, service: "MedBook", account: email)
+        } catch {
+            print("Error saving to Keychain: \(error.localizedDescription)")
+        }
     }
     
     func getCountryList() {
@@ -93,7 +102,12 @@ final class SignUpViewModel: ObservableObject {
                     case .success(let response):
                         self.countryList = Array(response.data.values).map { $0.country }
                         if !self.countryList.isEmpty {
-                            self.selectedCountry = self.countryList[0]
+                            if let savedCountry = UserDefaults.standard.string(forKey: "selectedCountry"),
+                               self.countryList.contains(savedCountry) {
+                                self.selectedCountry = savedCountry
+                            } else {
+                                self.selectedCountry = self.countryList[0]
+                            }
                             self.updateCTAState()
                         }
                     case .failure(let error):
