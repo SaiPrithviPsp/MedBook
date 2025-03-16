@@ -14,7 +14,7 @@ struct SplashScreen: View {
         Group {
             if let isLoggedIn = authHelper.isLoggedIn {
                 if isLoggedIn {
-                    HomeView()
+                    HomeScreen()
                 } else {
                     LoginView()
                 }

@@ -15,14 +15,14 @@ struct RouterView: View {
             SplashScreen() // Always starts with SplashScreen
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
-                    case .home:
-                        HomeView()
-                    case .detail(let message):
-                        DetailView(message: message)
-                    case .settings:
-                        SettingsView()
-                    case .login:
-                        LoginView()
+                        case .home:
+                            HomeScreen()
+                        case .detail(let message):
+                            DetailView(message: message)
+                        case .settings:
+                            SettingsView()
+                        case .login:
+                            LoginView()
                     }
                 }
         }
