@@ -21,11 +21,10 @@ struct SignupScreen: View {
             
             SecureField("Password", text: $viewModel.password)
             
-            Button(action: {
-                viewModel.onViewAppear()
-            }) {
-                Text("Sign up")
+            PrimaryCta(text: "Sign up", isEnabled: viewModel.isPrimaryCtaEnabled) {
+                viewModel.didTapSignUpButton()
             }
+            .padding()
         }
         .navigationTitle("Sign up")
         .onAppear {

@@ -12,6 +12,8 @@ final class SignUpViewModel: ObservableObject {
     
     @Published var email: String = ""
     @Published var password: String = ""
+    @Published var isPrimaryCtaEnabled: Bool = false
+    
     init(userNetworkService: UserNetworkServiceProtocol = UserNetworkService()) {
         self.networkService = userNetworkService
     }
