@@ -12,4 +12,5 @@ enum AppRoute: Hashable {
     case login
     case landing
     case signup
+    case bookmarks
 }

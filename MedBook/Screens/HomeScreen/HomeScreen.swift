@@ -50,7 +50,7 @@ struct HomeScreen: View {
             // Right buttons
             HStack(spacing: 16) {
                 Button(action: {
-                    router.navigate(to: .landing) // update to bookmark screen
+                    router.navigate(to: .bookmarks)
                 }) {
                     Image(systemName: "bookmark.fill")
                         .font(.title3)
