@@ -12,20 +12,42 @@ struct SignupScreen: View {
     @StateObject var viewModel = SignUpViewModel()
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 16) {
             Text("Welcome")
+                .font(.title)
+                .fontWeight(.bold)
             Text("Sign up to continue")
+                .foregroundColor(.gray)
             
-            TextField("Email", text: $viewModel.email)
-                .autocapitalization(.none)
+            VStack(alignment: .leading, spacing: 4) {
+                TextField("Email", text: $viewModel.email)
+                    .autocapitalization(.none)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                if let error = viewModel.emailError {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.caption)
+                }
+            }
             
-            SecureField("Password", text: $viewModel.password)
+            VStack(alignment: .leading, spacing: 4) {
+                SecureField("Password", text: $viewModel.password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                if let error = viewModel.passwordError {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.caption)
+                }
+            }
             
             PrimaryCta(text: "Sign up", isEnabled: viewModel.isPrimaryCtaEnabled) {
                 viewModel.didTapSignUpButton()
             }
-            .padding()
+            .padding(.top, 8)
+            
+            Spacer()
         }
+        .padding()
         .navigationTitle("Sign up")
         .onAppear {
             viewModel.onViewAppear()

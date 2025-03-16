@@ -10,6 +10,7 @@ import Foundation
 
 protocol UserNetworkServiceProtocol {
     func fetchUser(userId: Int, completion: @escaping (Result<UserResponse, Error>) -> Void)
+    func fetchCountries(completion: @escaping (Result<CountryResponse, Error>) -> Void)
 }
 
 class UserNetworkService: UserNetworkServiceProtocol {
@@ -21,6 +22,11 @@ class UserNetworkService: UserNetworkServiceProtocol {
     
     func fetchUser(userId: Int, completion: @escaping (Result<UserResponse, Error>) -> Void) {
         let request = GetUserRequest(userId: userId)
+        networkManager.execute(request, completion: completion)
+    }
+    
+    func fetchCountries(completion: @escaping (Result<CountryResponse, Error>) -> Void) {
+        let request = GetCountriesRequest()
         networkManager.execute(request, completion: completion)
     }
 }
@@ -44,4 +50,5 @@ struct UserResponse: Decodable {
     let username: String
     let email: String
 }
+
 

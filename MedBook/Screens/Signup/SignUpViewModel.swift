@@ -5,29 +5,97 @@
 //  Created by Sai Prithvi on 16/03/25.
 //
 
-import Foundation
+import SwiftUI
+
+struct Country {
+    
+}
 
 final class SignUpViewModel: ObservableObject {
     let networkService: UserNetworkServiceProtocol
     
-    @Published var email: String = ""
-    @Published var password: String = ""
+    @Published var email: String = "" {
+        didSet {
+            validateEmail()
+            updateCTAState()
+        }
+    }
+    @Published var password: String = "" {
+        didSet {
+            validatePassword()
+            updateCTAState()
+        }
+    }
+    @Published var countryList: [String] = []
     @Published var isPrimaryCtaEnabled: Bool = false
+    @Published var emailError: String?
+    @Published var passwordError: String?
     
     init(userNetworkService: UserNetworkServiceProtocol = UserNetworkService()) {
         self.networkService = userNetworkService
     }
     
+    private func validateEmail() {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailRegex)
+        
+        if email.isEmpty {
+            emailError = "Email is required"
+        } else if !emailPredicate.evaluate(with: email) {
+            emailError = "Please enter a valid email"
+        } else {
+            emailError = nil
+        }
+    }
+    
+    private func validatePassword() {
+        if password.isEmpty {
+            passwordError = "Password is required"
+            return
+        }
+        
+        let hasMinLength = password.count >= 8
+        let hasNumber = password.contains(where: { $0.isNumber })
+        let hasUppercase = password.contains(where: { $0.isUppercase })
+        let specialCharacters = CharacterSet(charactersIn: "!@#$%^&*()_+-=[]{}|;:,.<>?")
+        let hasSpecialCharacter = password.rangeOfCharacter(from: specialCharacters) != nil
+        
+        if !hasMinLength {
+            passwordError = "Password must be at least 8 characters"
+        } else if !hasNumber {
+            passwordError = "Password must contain at least 1 number"
+        } else if !hasUppercase {
+            passwordError = "Password must contain at least 1 uppercase character"
+        } else if !hasSpecialCharacter {
+            passwordError = "Password must contain at least 1 special character"
+        } else {
+            passwordError = nil
+        }
+    }
+    
+    private func updateCTAState() {
+        isPrimaryCtaEnabled = (emailError == nil && passwordError == nil)
+    }
+    
     func onViewAppear() {
-        fetchUser(userId: 1)
+        getCountryList()
     }
     
     func didTapSignUpButton() {
         
     }
     
-    func countryList() {
-        
+    func getCountryList() {
+        networkService.fetchCountries { result in
+            DispatchQueue.main.async {
+                switch result {
+                    case .success(let response):
+                        self.countryList = Array(response.data.values).map { $0.country }
+                    case .failure(let error):
+                        print("Error: \(error.localizedDescription)")
+                }
+            }
+        }
     }
     
     func fetchUser(userId: Int) {
