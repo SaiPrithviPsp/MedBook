@@ -57,4 +57,5 @@ struct Book: Decodable {
     let ratingsCount: Int?
     let authorName: [String]?
     let coverI: Int?
-} 
+    let firstPublishYear: Int?
+}

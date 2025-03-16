@@ -12,7 +12,7 @@ struct HomeScreen: View {
     @StateObject private var viewModel = HomeViewModel()
     
     enum SortOption {
-        case title, average, hits
+        case title, year, hits
     }
     
     @State private var selectedSort: SortOption = .title
@@ -165,6 +165,10 @@ struct BookCard: View {
                        Image(systemName: "eye.fill")
                            .foregroundColor(.orange)
                        Text("\(ratingsCount)")
+                   }
+                   
+                   if let yearPublished = book.firstPublishYear {
+                       Text(String(yearPublished))
                    }
                }
                .font(.subheadline)
