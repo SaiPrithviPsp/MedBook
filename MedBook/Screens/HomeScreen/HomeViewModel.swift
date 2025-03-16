@@ -12,13 +12,7 @@ final class HomeViewModel: ObservableObject {
     let networkService: HomeNetworkServiceProtocol
     let nextNavigationStep = PassthroughSubject<AppRoute, Never>()
     
-    @Published var searchText: String = "" {
-        didSet {
-            if searchText.count >= 3 {
-                resetAndSearch()
-            }
-        }
-    }
+    @Published var searchText: String = ""
     
     @Published var books: [Book] = []
     @Published var isLoading: Bool = false
@@ -50,18 +44,10 @@ final class HomeViewModel: ObservableObject {
             .debounce(for: .milliseconds(500), scheduler: RunLoop.main) // Delay API call
             .removeDuplicates() // Prevent duplicate calls
             .sink { [weak self] text in
-                guard !text.isEmpty else { return }
+                guard !text.isEmpty, text.count > 2 else { return }
                 self?.searchBooks(for: text)
             }
             .store(in: &cancellables)
-    }
-    
-    private func resetAndSearch() {
-        books = []
-        unsortedBooks = []
-        currentOffset = 0
-        hasMoreBooks = true
-        searchBooks(for: searchText)
     }
     
     private func sortBooks() {
@@ -90,6 +76,7 @@ final class HomeViewModel: ObservableObject {
     
     func searchBooks(for text: String) {
         guard !isLoading && hasMoreBooks else { return }
+        print("searching books: \(text)")
         
         isLoading = true
         networkService.fetchBooks(query: text, limit: booksPerPage, offset: currentOffset) { [weak self] result in
