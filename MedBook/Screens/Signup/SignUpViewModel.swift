@@ -27,6 +27,7 @@ final class SignUpViewModel: ObservableObject {
         }
     }
     @Published var countryList: [String] = []
+    @Published var selectedCountry: String = ""
     @Published var isPrimaryCtaEnabled: Bool = false
     @Published var emailError: String?
     @Published var passwordError: String?
@@ -74,7 +75,7 @@ final class SignUpViewModel: ObservableObject {
     }
     
     private func updateCTAState() {
-        isPrimaryCtaEnabled = (emailError == nil && passwordError == nil)
+        isPrimaryCtaEnabled = (emailError == nil && passwordError == nil && !selectedCountry.isEmpty)
     }
     
     func onViewAppear() {
@@ -91,6 +92,10 @@ final class SignUpViewModel: ObservableObject {
                 switch result {
                     case .success(let response):
                         self.countryList = Array(response.data.values).map { $0.country }
+                        if !self.countryList.isEmpty {
+                            self.selectedCountry = self.countryList[0]
+                            self.updateCTAState()
+                        }
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")
                 }

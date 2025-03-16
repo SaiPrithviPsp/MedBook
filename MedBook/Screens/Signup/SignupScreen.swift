@@ -19,26 +19,45 @@ struct SignupScreen: View {
             Text("Sign up to continue")
                 .foregroundColor(.gray)
             
-            VStack(alignment: .leading, spacing: 4) {
-                TextField("Email", text: $viewModel.email)
-                    .autocapitalization(.none)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                if let error = viewModel.emailError {
-                    Text(error)
-                        .foregroundColor(.red)
-                        .font(.caption)
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 4) {
+                    TextField("Email", text: $viewModel.email)
+                        .autocapitalization(.none)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    if let error = viewModel.emailError {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    SecureField("Password", text: $viewModel.password)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    if let error = viewModel.passwordError {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                }
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Select your country")
+                        .font(.headline)
+                    
+                    if !viewModel.countryList.isEmpty {
+                        Picker("Country", selection: $viewModel.selectedCountry) {
+                            ForEach(viewModel.countryList, id: \.self) { country in
+                                Text(country)
+                                    .tag(country)
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                        .frame(height: 150)
+                    }
                 }
             }
-            
-            VStack(alignment: .leading, spacing: 4) {
-                SecureField("Password", text: $viewModel.password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                if let error = viewModel.passwordError {
-                    Text(error)
-                        .foregroundColor(.red)
-                        .font(.caption)
-                }
-            }
+            .padding(.bottom, 16)
             
             PrimaryCta(text: "Sign up", isEnabled: viewModel.isPrimaryCtaEnabled) {
                 viewModel.didTapSignUpButton()
