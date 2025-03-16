@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
             endingLineNumber = "53"
-            landmarkName = "loadMoreBooksIfNeeded(currentItem:)"
+            landmarkName = "resetAndSearch()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -32,7 +32,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "58"
             endingLineNumber = "58"
-            landmarkName = "searchBooks()"
+            landmarkName = "sortBooks()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

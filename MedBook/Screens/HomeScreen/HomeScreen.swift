@@ -11,14 +11,6 @@ struct HomeScreen: View {
     @EnvironmentObject var router: RouterViewModel
     @StateObject private var viewModel = HomeViewModel()
     
-    enum SortOption: String {
-        case title = "Title"
-        case year = "Year"
-        case hits = "Hits"
-    }
-    
-    @State private var selectedSort: SortOption = .title
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             header
@@ -114,12 +106,12 @@ struct HomeScreen: View {
                 
                 ForEach([SortOption.title, .year, .hits], id: \.self) { option in
                     Button(action: {
-                        selectedSort = option
+                        viewModel.sortOption = option
                     }) {
                         Text(option.rawValue)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .background(selectedSort == option ? Color.gray.opacity(0.2) : Color.clear)
+                            .background(viewModel.sortOption == option ? Color.gray.opacity(0.2) : Color.clear)
                             .cornerRadius(8)
                     }
                 }

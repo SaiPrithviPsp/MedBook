@@ -23,7 +23,13 @@ final class HomeViewModel: ObservableObject {
     @Published var books: [Book] = []
     @Published var isLoading: Bool = false
     @Published var hasMoreBooks: Bool = true
+    @Published var sortOption: SortOption = .title {
+        didSet {
+            sortBooks()
+        }
+    }
     
+    private var unsortedBooks: [Book] = []
     private var currentOffset: Int = 0
     private let booksPerPage: Int = 10
     
@@ -42,9 +48,27 @@ final class HomeViewModel: ObservableObject {
     
     private func resetAndSearch() {
         books = []
+        unsortedBooks = []
         currentOffset = 0
         hasMoreBooks = true
         searchBooks()
+    }
+    
+    private func sortBooks() {
+        switch sortOption {
+        case .title:
+            books = unsortedBooks.sorted { ($0.title).lowercased() < ($1.title).lowercased() }
+        case .year:
+            books = unsortedBooks.sorted { 
+                guard let year1 = $0.firstPublishYear, let year2 = $1.firstPublishYear else { return false }
+                return year1 > year2
+            }
+        case .hits:
+            books = unsortedBooks.sorted {
+                guard let count1 = $0.ratingsCount, let count2 = $1.ratingsCount else { return false }
+                return count1 > count2
+            }
+        }
     }
     
     func loadMoreBooksIfNeeded(currentItem index: Int) {
@@ -66,16 +90,24 @@ final class HomeViewModel: ObservableObject {
                 switch result {
                     case .success(let response):
                         let newBooks = response.docs
-                        self.books.append(contentsOf: newBooks)
+                        self.unsortedBooks.append(contentsOf: newBooks)
                         self.currentOffset += newBooks.count
                         self.hasMoreBooks = newBooks.count == self.booksPerPage
+                        self.sortBooks()
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")
                         if self.currentOffset == 0 {
                             self.books = []
+                            self.unsortedBooks = []
                         }
                 }
             }
         }
     }
 } 
+
+enum SortOption: String {
+    case title = "Title"
+    case year = "Year"
+    case hits = "Hits"
+}
