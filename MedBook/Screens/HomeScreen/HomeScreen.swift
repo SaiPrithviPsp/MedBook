@@ -72,5 +72,8 @@ struct HomeScreen: View {
         .onReceive(viewModel.nextNavigationStep) { newValue in
             router.navigate(to: newValue)
         }
+        .onAppear {
+            viewModel.onViewAppear()
+        }
     }
 }

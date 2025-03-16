@@ -9,13 +9,17 @@ import SwiftUI
 import Combine
 
 final class HomeViewModel: ObservableObject {
-    let networkService: UserNetworkServiceProtocol
+    let networkService: HomeNetworkServiceProtocol
     let nextNavigationStep = PassthroughSubject<AppRoute, Never>()
     
-    @Published var searchText: String = ""
+    @Published var searchText: String = "GAME"
     
-    init(userNetworkService: UserNetworkServiceProtocol = UserNetworkService()) {
-        self.networkService = userNetworkService
+    init(homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
+        self.networkService = homeNetworkService
+    }
+
+    func onViewAppear() {
+        searchBooks() // todo: remove this
     }
     
     func logout() {
@@ -24,15 +28,13 @@ final class HomeViewModel: ObservableObject {
     }
     
     func searchBooks() {
-        // TODO: Implement book search functionality
-        print("Searching for: \(searchText)")
-    }
-    
-    func navigateToDetail(message: String) {
-        // TODO: Implement when detail route is available
-    }
-    
-    func navigateToSettings() {
-        // TODO: Implement when settings route is available
+        networkService.fetchBooks(query: searchText, limit: 10, offset: 0) { [weak self] result in
+            switch result {
+                case .success(let response):
+                    print(response)
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")   
+            }
+        }
     }
 } 
