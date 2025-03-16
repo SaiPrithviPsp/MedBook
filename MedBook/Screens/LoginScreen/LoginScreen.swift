@@ -13,9 +13,14 @@ struct LoginScreen: View {
     @EnvironmentObject var router: RouterViewModel
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(alignment: .leading, spacing: 20) {
             Text("Welcome Back")
                 .font(.largeTitle)
+                .fontWeight(.bold)
+            
+            Text("Login to continue")
+                .foregroundStyle(Color(.systemGray))
+                .font(.title3)
                 .fontWeight(.bold)
                 .padding(.bottom, 30)
             
@@ -58,10 +63,12 @@ struct LoginScreen: View {
             Spacer()
         }
         .padding()
-        .navigationTitle("Login")
         .onReceive(viewModel.nextNavigationStep) { newValue in
             router.navigate(to: newValue)
         }
     }
 }
 
+#Preview {
+    LoginScreen()
+}
