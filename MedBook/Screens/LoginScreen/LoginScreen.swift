@@ -61,6 +61,17 @@ struct LoginScreen: View {
             }
             .padding()
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    router.goBack()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.primary)
+                }
+            }
+        }
         .padding()
         .background(Color.primaryBgColor)
         .onReceive(viewModel.nextNavigationStep) { newValue in

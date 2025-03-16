@@ -23,7 +23,7 @@ struct LandingScreen: View {
                 .frame(width: 120, height: 100)
             Spacer()
             HStack {
-                PrimaryCta(text: "Singup") {
+                PrimaryCta(text: "Sign up") {
                     router.navigate(to: .signup)
                 }
                 Spacer().frame(width: 20)
