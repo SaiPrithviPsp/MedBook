@@ -9,26 +9,20 @@ import SwiftUI
 
 struct SplashScreen: View {
     @ObservedObject var authHelper = AuthHelper.shared
-
+    @EnvironmentObject var router: RouterViewModel
+    
     var body: some View {
-        Group {
-            if let isLoggedIn = authHelper.isLoggedIn {
-                if isLoggedIn {
-                    HomeScreen()
+            VStack {
+                ProgressView("Checking Authentication...")
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
+            }
+            .onAppear {
+                if authHelper.isUserLoggedIn() {
+                    router.navigate(to: .home)
                 } else {
-                    LoginView()
-                }
-            } else {
-                // Show Loader while checking authentication
-                VStack {
-                    ProgressView("Checking Authentication...")
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .padding()
-                }
-                .onAppear {
-                    authHelper.checkAuthenticationStatus()
+                    router.navigate(to: .landing)
                 }
             }
-        }
     }
 }

@@ -22,7 +22,11 @@ struct RouterView: View {
                         case .settings:
                             SettingsView()
                         case .login:
-                            LoginView()
+                            LoginScreen()
+                        case .landing:
+                            LandingScreen()
+                        case .signup:
+                            SignupScreen()
                     }
                 }
         }

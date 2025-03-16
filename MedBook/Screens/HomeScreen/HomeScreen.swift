@@ -19,8 +19,13 @@ struct HomeScreen: View {
             Button("Go to Settings") {
                 router.navigate(to: .settings)
             }
+            Button("Logout") {
+                AuthHelper.shared.logout()
+                router.navigate(to: .landing)
+            }
         }
         .navigationTitle("Home")
+        .navigationBarBackButtonHidden()
     }
 }
 

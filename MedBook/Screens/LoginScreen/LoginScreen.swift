@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct LoginScreen: View {
     @EnvironmentObject var authHelper: AuthHelper
 
     var body: some View {
