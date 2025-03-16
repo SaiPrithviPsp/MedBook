@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct HomeScreen: View {
     @EnvironmentObject var router: RouterViewModel
 
     var body: some View {
@@ -19,8 +19,13 @@ struct HomeView: View {
             Button("Go to Settings") {
                 router.navigate(to: .settings)
             }
+            Button("Logout") {
+                AuthHelper.shared.logout()
+                router.navigate(to: .landing)
+            }
         }
         .navigationTitle("Home")
+        .navigationBarBackButtonHidden()
     }
 }
 

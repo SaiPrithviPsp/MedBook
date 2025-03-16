@@ -12,4 +12,6 @@ enum AppRoute: Hashable {
     case detail(String)
     case settings
     case login
+    case landing
+    case signup
 }
