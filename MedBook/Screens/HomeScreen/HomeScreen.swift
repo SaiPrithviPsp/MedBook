@@ -26,6 +26,7 @@ struct HomeScreen: View {
             Spacer()
         }
         .navigationBarHidden(true)
+        .background(Color.primaryBgColor)
         .onReceive(viewModel.nextNavigationStep) { newValue in
             router.navigate(to: newValue)
         }
@@ -99,13 +100,15 @@ struct HomeScreen: View {
         if !viewModel.books.isEmpty {
             HStack(spacing: 16) {
                 Text("Sort By:")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.black)
                 
                 ForEach([SortOption.title, .year, .hits], id: \.self) { option in
                     Button(action: {
                         viewModel.sortOption = option
                     }) {
                         Text(option.rawValue)
+                            .foregroundStyle(Color.black)
+                            .fontWeight(.bold)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
                             .background(viewModel.sortOption == option ? Color.gray.opacity(0.2) : Color.clear)

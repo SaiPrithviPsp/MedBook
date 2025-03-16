@@ -23,6 +23,7 @@ struct BookmarkScreen: View {
             
             Spacer()
         }
+        .background(Color.primaryBgColor)
         .navigationBarHidden(true)
         .onAppear {
             viewModel.fetchBookmarks()

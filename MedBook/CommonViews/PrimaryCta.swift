@@ -26,7 +26,10 @@ struct PrimaryCta: View {
     }
     
     var body: some View {
-        Button(action: action) {
+        Button {
+            UISelectionFeedbackGenerator().selectionChanged()
+            action()
+        } label: {
             HStack {
                 Text(text)
                     .font(.body)
