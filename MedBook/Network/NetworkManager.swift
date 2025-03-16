@@ -40,7 +40,9 @@ class NetworkManager {
             }
             
             do {
-                let decodedResponse = try JSONDecoder().decode(Request.Response.self, from: data)
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let decodedResponse = try decoder.decode(Request.Response.self, from: data)
                 completion(.success(decodedResponse))
             } catch {
                 completion(.failure(error))

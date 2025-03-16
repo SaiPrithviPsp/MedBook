@@ -6,10 +6,7 @@
 //
 
 import SwiftUI
-
-struct Country {
-    
-}
+import Combine
 
 final class SignUpViewModel: ObservableObject {
     let networkService: UserNetworkServiceProtocol
@@ -36,6 +33,8 @@ final class SignUpViewModel: ObservableObject {
     @Published var hasMinLength: Bool = false
     @Published var hasUppercase: Bool = false
     @Published var hasSpecialCharacter: Bool = false
+    
+    let nextNavigationStep = PassthroughSubject<AppRoute, Never>()
     
     init(userNetworkService: UserNetworkServiceProtocol = UserNetworkService()) {
         self.networkService = userNetworkService
@@ -95,6 +94,8 @@ final class SignUpViewModel: ObservableObject {
         do {
             let data = try JSONEncoder().encode(credentials)
             try KeychainHelper.standard.save(data, service: "MedBook", account: email)
+            AuthHelper.shared.login()
+            nextNavigationStep.send(.home)
         } catch {
             print("Error saving to Keychain: \(error.localizedDescription)")
         }
@@ -115,19 +116,6 @@ final class SignUpViewModel: ObservableObject {
                             }
                             self.updateCTAState()
                         }
-                    case .failure(let error):
-                        print("Error: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-    
-    func fetchUser(userId: Int) {
-        networkService.fetchUser(userId: userId) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                    case .success(let user):
-                        print(user)
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")
                 }

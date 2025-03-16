@@ -9,8 +9,6 @@ import Foundation
 
 enum AppRoute: Hashable {
     case home
-    case detail(String)
-    case settings
     case login
     case landing
     case signup

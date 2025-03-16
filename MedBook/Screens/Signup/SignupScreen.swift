@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SignupScreen: View {
-    @EnvironmentObject var authHelper: AuthHelper
     @StateObject var viewModel = SignUpViewModel()
+    @EnvironmentObject var router: RouterViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -97,6 +97,9 @@ struct SignupScreen: View {
         .navigationTitle("Sign up")
         .onAppear {
             viewModel.onViewAppear()
+        }
+        .onReceive(viewModel.nextNavigationStep) { newValue in
+            router.navigate(to: newValue)
         }
     }
 }
