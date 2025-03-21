@@ -150,10 +150,9 @@ final class SignUpViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                     case .success(let response):
-                        print(response)
                         UserDefaults.standard.set(response.country, forKey: "selectedCountry")
                         completion(response.country)
-                    case .failure(let error):
+                    case .failure:
                         completion(nil)
                 }
             }
