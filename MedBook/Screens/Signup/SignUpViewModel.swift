@@ -105,23 +105,55 @@ final class SignUpViewModel: ObservableObject {
         }
     }
     
-    func getCountryList() {
+    private func getCountryList() {
+        if let countryList = UserDefaults.standard.array(forKey: "countryList") as? [String] {
+            self.countryList = countryList
+            self.setDefaultCountry()
+        } else {
+            fetchCountryList()
+        }
+    }
+    
+    private func fetchCountryList() {
         networkService.fetchCountries { result in
             DispatchQueue.main.async {
                 switch result {
                     case .success(let response):
                         self.countryList = Array(response.data.values).map { $0.country }
-                        if !self.countryList.isEmpty {
-                            if let savedCountry = UserDefaults.standard.string(forKey: "selectedCountry"),
-                               self.countryList.contains(savedCountry) {
-                                self.selectedCountry = savedCountry
-                            } else {
-                                self.selectedCountry = self.countryList[0]
-                            }
-                            self.updateCTAState()
-                        }
+                        UserDefaults.standard.set(self.countryList, forKey: "countryList")
+                        self.setDefaultCountry()
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func setDefaultCountry() {
+        if let savedCountry = UserDefaults.standard.string(forKey: "selectedCountry"),
+           countryList.contains(savedCountry) {
+            selectedCountry = savedCountry
+        } else {
+            fetchDefaultCountry { defaultCountry in
+                if let defaultCountry, self.countryList.contains(defaultCountry) {
+                    self.selectedCountry = defaultCountry
+                } else {
+                    self.selectedCountry = self.countryList.first ?? ""
+                }
+            }
+            
+        }
+    }
+    
+    private func fetchDefaultCountry(completion: @escaping (String?) -> Void) {
+        networkService.fetchCurrentCountry { result in
+            DispatchQueue.main.async {
+                switch result {
+                    case .success(let response):
+                        UserDefaults.standard.set(response.country, forKey: "selectedCountry")
+                        completion(response.country)
+                    case .failure:
+                        completion(nil)
                 }
             }
         }
