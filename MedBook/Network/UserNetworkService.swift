@@ -11,6 +11,7 @@ import Foundation
 protocol UserNetworkServiceProtocol {
     func fetchUser(userId: Int, completion: @escaping (Result<UserResponse, Error>) -> Void)
     func fetchCountries(completion: @escaping (Result<CountryResponse, Error>) -> Void)
+    func fetchCurrentCountry(completion: @escaping (Result<CurrentCountryResponse, Error>) -> Void)
 }
 
 class UserNetworkService: UserNetworkServiceProtocol {
@@ -27,6 +28,11 @@ class UserNetworkService: UserNetworkServiceProtocol {
     
     func fetchCountries(completion: @escaping (Result<CountryResponse, Error>) -> Void) {
         let request = GetCountriesRequest()
+        networkManager.execute(request, completion: completion)
+    }
+    
+    func fetchCurrentCountry(completion: @escaping (Result<CurrentCountryResponse, Error>) -> Void) {
+        let request = GetCurrentCountryRequest()
         networkManager.execute(request, completion: completion)
     }
 }

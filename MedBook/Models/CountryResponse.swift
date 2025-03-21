@@ -1,6 +1,5 @@
 import Foundation
 
-
 struct CountryResponse: Decodable {
     let status: String
     let statusCode: Int
