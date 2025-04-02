@@ -18,10 +18,7 @@ final class BookDetailViewModel: ObservableObject {
         self.networkService = homeNetworkService
         self.book = book
         
-        // if not in cache then fetch from API
-        if book.description == nil || book.description!.isEmpty {
-            fetchBookDetails(for: book.key)
-        }
+        fetchBookDetails(for: book.key)
     }
     
     // removes the prefix and returns the actual key.
@@ -32,17 +29,26 @@ final class BookDetailViewModel: ObservableObject {
     }
     
     func fetchBookDetails(for key: String) {
-        let actualKey = removePrefix(for: key)
-        networkService.fetchBookDetails(key: actualKey) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                    case .success(let response):
-                    if BookmarkManager.shared.isBookmarked(self.book) {
-                            BookmarkManager.shared.updateBook(self.book, description: response.description)
-                        }
-                    case .failure(let error):
-                        print("Error: \(error.localizedDescription)")
+        if BookmarkManager.shared.isBookmarked(self.book) {
+            if let updatedBook = BookmarkManager.shared.fetchBook(key: key) {
+                self.book = updatedBook
+            }
+        }
+        
+        if self.book.description == nil || self.book.description!.isEmpty {
+            let actualKey = removePrefix(for: key)
+            networkService.fetchBookDetails(key: actualKey) { [weak self] result in
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
+                    switch result {
+                        case .success(let response):
+                            self.book.description = response.description
+                            if BookmarkManager.shared.isBookmarked(self.book) {
+                                BookmarkManager.shared.updateBook(self.book, description: response.description)
+                            }
+                        case .failure(let error):
+                            print("Error: \(error.localizedDescription)")
+                    }
                 }
             }
         }

@@ -54,6 +54,7 @@ struct BookDetailScreen: View {
                 imageView
                 nameDateView
                 authorNameView
+                descriptionView
             }
             .padding(.horizontal)
         }
@@ -99,6 +100,13 @@ struct BookDetailScreen: View {
             .font(.body)
             .foregroundColor(.black)
             .frame(alignment: .leading)
+    }
+    
+    private var descriptionView: some View {
+        Text(book.description ?? "")
+            .font(.caption)
+            .foregroundColor(.gray)
+            .lineLimit(nil)
     }
     
     // move to a common place?

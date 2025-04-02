@@ -84,5 +84,5 @@ struct Book: Decodable, Hashable {
     let authorName: [String]?
     let coverI: Int?
     let firstPublishYear: Int?
-    let description: String?
+    var description: String?
 }
