@@ -9,6 +9,7 @@ import Foundation
 
 protocol HomeNetworkServiceProtocol {
     func fetchBooks(query: String, limit: Int, offset: Int, completion: @escaping (Result<BookSearchResponse, Error>) -> Void)
+    func fetchBookDetails(key: String, completion: @escaping (Result<GetBookDetailsResponse, Error>) -> Void)
 }
 
 class HomeNetworkService: HomeNetworkServiceProtocol {
@@ -20,6 +21,11 @@ class HomeNetworkService: HomeNetworkServiceProtocol {
     
     func fetchBooks(query: String, limit: Int, offset: Int, completion: @escaping (Result<BookSearchResponse, Error>) -> Void) {
         let request = SearchBooksRequest(title: query, limit: limit, offset: offset)
+        networkManager.execute(request, completion: completion)
+    }
+    
+    func fetchBookDetails(key: String, completion: @escaping (Result<GetBookDetailsResponse, Error>) -> Void) {
+        let request = GetBookDetailsRequest(key: key)
         networkManager.execute(request, completion: completion)
     }
 }
@@ -49,6 +55,25 @@ struct BookSearchResponse: Decodable {
     let numFound: Int
     let start: Int
     let docs: [Book]
+}
+
+struct GetBookDetailsRequest: APIRequest {
+    typealias Response = GetBookDetailsResponse
+    
+    let key: String
+    
+    var baseURL: String { "https://openlibrary.org" }
+    var path: String {
+        "/works/\(key).json"
+    }
+    var method: HTTPMethod { .GET }
+    var headers: [String: String]? { nil }
+    var queryParams: [String: String]? { nil }
+    var body: Data? { nil }
+}
+
+struct GetBookDetailsResponse: Decodable {
+    let description: String
 }
 
 struct Book: Decodable, Hashable {

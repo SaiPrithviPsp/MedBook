@@ -128,6 +128,9 @@ struct HomeScreen: View {
                             viewModel.loadMoreBooksIfNeeded(currentItem: index)
                         }
                         .id(book.key)
+                        .onTapGesture {
+                            router.navigate(to: .bookDetail)
+                        }
                 }
                 
                 if viewModel.isLoading {
