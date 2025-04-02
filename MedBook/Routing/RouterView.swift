@@ -25,8 +25,8 @@ struct RouterView: View {
                             SignupScreen()
                         case .bookmarks:
                             BookmarkScreen()
-                        case .bookDetail(let key):
-                            BookDetailScreen(viewModel: BookDetailViewModel(key: key))
+                        case .bookDetail(let book):
+                            BookDetailScreen(viewModel: BookDetailViewModel(book: book))
                     }
                 }
         }

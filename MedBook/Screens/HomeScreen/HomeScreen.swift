@@ -129,7 +129,7 @@ struct HomeScreen: View {
                         }
                         .id(book.key)
                         .onTapGesture {
-                            router.navigate(to: .bookDetail(key: book.key))
+                            router.navigate(to: .bookDetail(book: book))
                         }
                 }
                 

@@ -9,15 +9,19 @@ import SwiftUI
 import Combine
 
 final class BookDetailViewModel: ObservableObject {
-    @Published var bookmarks: [Book] = []
+    @Published var book: Book
     private let bookmarkManager = BookmarkManager.shared
     private var cancellables = Set<AnyCancellable>()
     private let networkService: HomeNetworkServiceProtocol
     
-    init(key: String, homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
+    init(book: Book, homeNetworkService: HomeNetworkServiceProtocol = HomeNetworkService()) {
         self.networkService = homeNetworkService
+        self.book = book
+        
         // if not in cache then fetch from API
-        fetchBookDetails(for: key)
+        if book.description == nil || book.description!.isEmpty {
+            fetchBookDetails(for: book.key)
+        }
     }
     
     // removes the prefix and returns the actual key.
@@ -31,8 +35,7 @@ final class BookDetailViewModel: ObservableObject {
         let actualKey = removePrefix(for: key)
         networkService.fetchBookDetails(key: actualKey) { [weak self] result in
             DispatchQueue.main.async {
-//                guard let self = self else { return } 
-                
+                guard let self = self else { return }
                 switch result {
                     case .success(let response):
                         print(response)

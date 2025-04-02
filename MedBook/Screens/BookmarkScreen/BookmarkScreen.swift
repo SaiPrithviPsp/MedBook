@@ -94,7 +94,8 @@ extension BookmarkEntity {
             ratingsCount: Int(self.hits),
             authorName: self.author.map { [$0] },
             coverI: Int(self.coverId),
-            firstPublishYear: Int(self.yearPublished)
+            firstPublishYear: Int(self.yearPublished),
+            description: self.desc ?? ""
         )
     }
 } 
