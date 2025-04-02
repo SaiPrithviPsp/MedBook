@@ -13,5 +13,5 @@ enum AppRoute: Hashable {
     case landing
     case signup
     case bookmarks
-    case bookDetail
+    case bookDetail(key: String)
 }

@@ -20,10 +20,18 @@ final class BookDetailViewModel: ObservableObject {
         fetchBookDetails(for: key)
     }
     
+    // removes the prefix and returns the actual key.
+    // ex: input: /works/OL49488W output: OL49488W
+    private func removePrefix(for key: String) -> String {
+        let components = key.split(separator: "/")
+        return String(components[components.count - 1])
+    }
+    
     func fetchBookDetails(for key: String) {
-        networkService.fetchBookDetails(key: key) { [weak self] result in
+        let actualKey = removePrefix(for: key)
+        networkService.fetchBookDetails(key: actualKey) { [weak self] result in
             DispatchQueue.main.async {
-                guard let self = self else { return }
+//                guard let self = self else { return } 
                 
                 switch result {
                     case .success(let response):

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BookDetailScreen: View {
     @EnvironmentObject var router: RouterViewModel
-    @StateObject private var viewModel = BookDetailViewModel(key: "OL49488W")
+    @StateObject var viewModel: BookDetailViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
