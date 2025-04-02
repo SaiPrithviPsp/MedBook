@@ -83,7 +83,7 @@ struct BookDetailScreen: View {
     private var nameDateView: some View {
         HStack {
             Text(book.title)
-                .font(.headline)
+                .font(.title)
                 .foregroundColor(.black)
             
             Spacer()
@@ -97,16 +97,31 @@ struct BookDetailScreen: View {
     
     private var authorNameView: some View {
         Text(book.authorName?[0] ?? "")
-            .font(.body)
+            .font(.headline)
             .foregroundColor(.black)
             .frame(alignment: .leading)
     }
     
+    @ViewBuilder
     private var descriptionView: some View {
-        Text(book.description ?? "")
-            .font(.caption)
-            .foregroundColor(.gray)
-            .lineLimit(nil)
+        if book.description == nil || book.description!.isEmpty {
+            loaderView
+        } else {
+            Text(book.description ?? "")
+                .font(.body)
+                .foregroundColor(.gray)
+                .lineLimit(nil)
+        }
+    }
+    
+    private var loaderView: some View {
+        HStack {
+            Spacer()
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle())
+                .padding()
+            Spacer()
+        }
     }
     
     // move to a common place?
