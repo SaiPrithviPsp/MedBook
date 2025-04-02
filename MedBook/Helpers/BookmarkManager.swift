@@ -85,6 +85,7 @@ final class BookmarkManager: ObservableObject {
         bookmarkEntity.hits = Int64(book.ratingsCount ?? 0)
         bookmarkEntity.yearPublished = Int16(book.firstPublishYear ?? 0)
         bookmarkEntity.dateAdded = Date()
+        bookmarkEntity.desc = book.description
         
         coreDataManager.saveContext()
     }
