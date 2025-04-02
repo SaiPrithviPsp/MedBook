@@ -19,7 +19,7 @@ struct BookCard: View {
                 HStack {
                     title
                     Spacer()
-                    bookmakrButton
+                    bookmarkButton
                 }
                 
                 authorName
@@ -87,7 +87,7 @@ struct BookCard: View {
         }
     }
     
-    private var bookmakrButton: some View {
+    private var bookmarkButton: some View {
         Button(action: {
             bookmarkManager.toggleBookmark(for: book)
         }) {
