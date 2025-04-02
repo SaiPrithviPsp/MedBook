@@ -62,10 +62,10 @@ struct BookDetailScreen: View {
     
     @ViewBuilder
     private var imageView: some View {
-        if let imageId = book.coverI {
+        if let urlString = book.getImageUrl() {
             HStack {
                 Spacer()
-                CachedAsyncImage(url: URL(string: getUrl(for: imageId))) { image in
+                CachedAsyncImage(url: URL(string: urlString)) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -88,9 +88,11 @@ struct BookDetailScreen: View {
             
             Spacer()
             
-            Text("\(book.firstPublishYear)")
-                .font(.caption)
-                .foregroundColor(.gray)
+            if let firstPublishYear = book.firstPublishYear {
+                Text(String(firstPublishYear))
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
         }
         .padding(.top, 40)
     }
@@ -104,14 +106,17 @@ struct BookDetailScreen: View {
     
     @ViewBuilder
     private var descriptionView: some View {
-        if book.description == nil || book.description!.isEmpty {
-            loaderView
-        } else {
-            Text(book.description ?? "")
-                .font(.body)
-                .foregroundColor(.gray)
-                .lineLimit(nil)
+        Group {
+            if book.description == nil || book.description!.isEmpty {
+                loaderView
+            } else {
+                Text(book.description ?? "")
+                    .font(.body)
+                    .foregroundColor(.gray)
+                    .lineLimit(nil)
+            }
         }
+        .padding(.top, 16)
     }
     
     private var loaderView: some View {
@@ -125,7 +130,5 @@ struct BookDetailScreen: View {
     }
     
     // move to a common place?
-    private func getUrl(for bookId: Int) -> String {
-        return "https://covers.openlibrary.org/b/id/\(bookId)-M.jpg"
-    }
+    
 }

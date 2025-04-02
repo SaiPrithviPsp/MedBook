@@ -21,13 +21,6 @@ final class BookDetailViewModel: ObservableObject {
         fetchBookDetails(for: book.key)
     }
     
-    // removes the prefix and returns the actual key.
-    // ex: input: /works/OL49488W output: OL49488W
-    private func removePrefix(for key: String) -> String {
-        let components = key.split(separator: "/")
-        return String(components[components.count - 1])
-    }
-    
     func fetchBookDetails(for key: String) {
         if BookmarkManager.shared.isBookmarked(self.book) {
             if let updatedBook = BookmarkManager.shared.fetchBook(key: key) {
@@ -42,15 +35,26 @@ final class BookDetailViewModel: ObservableObject {
                     guard let self = self else { return }
                     switch result {
                         case .success(let response):
-                            self.book.description = response.description
-                            if BookmarkManager.shared.isBookmarked(self.book) {
-                                BookmarkManager.shared.updateBook(self.book, description: response.description)
-                            }
+                            self.handleResponse(response)
                         case .failure(let error):
                             print("Error: \(error.localizedDescription)")
                     }
                 }
             }
+        }
+    }
+    
+    // removes the prefix and returns the actual key.
+    // ex: input: /works/OL49488W output: OL49488W
+    private func removePrefix(for key: String) -> String {
+        let components = key.split(separator: "/")
+        return String(components[components.count - 1])
+    }
+    
+    private func handleResponse(_ response: GetBookDetailsResponse) {
+        self.book.description = response.description
+        if BookmarkManager.shared.isBookmarked(self.book) {
+            BookmarkManager.shared.updateBook(self.book, description: response.description)
         }
     }
 }

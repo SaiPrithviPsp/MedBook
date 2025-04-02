@@ -86,3 +86,10 @@ struct Book: Decodable, Hashable {
     let firstPublishYear: Int?
     var description: String?
 }
+
+extension Book {
+    func getImageUrl() -> String? {
+        guard let imageId = self.coverI else { return nil }
+        return "https://covers.openlibrary.org/b/id/\(imageId)-M.jpg"
+    }
+}

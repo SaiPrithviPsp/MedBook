@@ -49,7 +49,7 @@ final class BookmarkManager: ObservableObject {
         fetchRequest.predicate = NSPredicate(format: "id == %@", book.key)
         
         do {
-            var books = try context.fetch(fetchRequest)
+            let books = try context.fetch(fetchRequest)
             books[0].setValue(description, forKey: "desc")
             coreDataManager.saveContext()
         } catch {

@@ -44,8 +44,8 @@ struct BookCard: View {
 
     @ViewBuilder
     private var imageView: some View {
-        if let imageId = book.coverI {
-            CachedAsyncImage(url: URL(string: getUrl(for: imageId))) { image in
+        if let urlString = book.getImageUrl() {
+            CachedAsyncImage(url: URL(string: urlString)) { image in
                image
                    .resizable()
                    .aspectRatio(contentMode: .fill)
