@@ -52,9 +52,18 @@ final class BookDetailViewModel: ObservableObject {
     }
     
     private func handleResponse(_ response: GetBookDetailsResponse) {
-        self.book.description = response.description
+        var desc: String?
+        
+        switch response.description {
+            case .string(let stringVal):
+                desc = stringVal
+            case .object(let objectValue):
+                desc = objectValue.value
+        }
+        
+        self.book.description = desc
         if BookmarkManager.shared.isBookmarked(self.book) {
-            BookmarkManager.shared.updateBook(self.book, description: response.description)
+            BookmarkManager.shared.updateBook(self.book, description: desc ?? "")
         }
     }
 }

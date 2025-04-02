@@ -73,7 +73,38 @@ struct GetBookDetailsRequest: APIRequest {
 }
 
 struct GetBookDetailsResponse: Decodable {
-    let description: String
+    let description: DynamicDescriptionValue
+}
+
+enum DynamicDescriptionValue: Decodable {
+    case string(String)
+    case object(BookDescription)
+    
+    // Custom decoding
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        
+        // Try decoding as a string first
+        if let stringValue = try? container.decode(String.self) {
+            self = .string(stringValue)
+            return
+        }
+        
+        // Try decoding as a dictionary
+        if let objectValue = try? container.decode(BookDescription.self) {
+            self = .object(objectValue)
+            return
+        }
+        
+        throw DecodingError.typeMismatch(DynamicDescriptionValue.self, DecodingError.Context(
+            codingPath: decoder.codingPath,
+            debugDescription: "Value is neither a string nor a JSON object"
+        ))
+    }
+}
+
+struct BookDescription: Decodable {
+    let value: String
 }
 
 struct Book: Decodable, Hashable {
