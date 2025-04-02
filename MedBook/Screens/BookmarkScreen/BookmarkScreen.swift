@@ -78,6 +78,9 @@ struct BookmarkScreen: View {
                 ForEach(viewModel.bookmarks, id: \.id) { bookmark in
                     BookCard(book: bookmark.toBook())
                         .padding(.horizontal)
+                        .onTapGesture {
+                            router.navigate(to: .bookDetail(book: bookmark.toBook()))
+                        }
                 }
             }
             .padding(.vertical)

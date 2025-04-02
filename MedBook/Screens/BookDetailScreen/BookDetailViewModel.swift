@@ -38,7 +38,9 @@ final class BookDetailViewModel: ObservableObject {
                 guard let self = self else { return }
                 switch result {
                     case .success(let response):
-                        print(response)
+                    if BookmarkManager.shared.isBookmarked(self.book) {
+                            BookmarkManager.shared.updateBook(self.book, description: response.description)
+                        }
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")
                 }
