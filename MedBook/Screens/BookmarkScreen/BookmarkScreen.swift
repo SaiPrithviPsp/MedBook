@@ -78,6 +78,9 @@ struct BookmarkScreen: View {
                 ForEach(viewModel.bookmarks, id: \.id) { bookmark in
                     BookCard(book: bookmark.toBook())
                         .padding(.horizontal)
+                        .onTapGesture {
+                            router.navigate(to: .bookDetail(book: bookmark.toBook()))
+                        }
                 }
             }
             .padding(.vertical)
@@ -94,7 +97,8 @@ extension BookmarkEntity {
             ratingsCount: Int(self.hits),
             authorName: self.author.map { [$0] },
             coverI: Int(self.coverId),
-            firstPublishYear: Int(self.yearPublished)
+            firstPublishYear: Int(self.yearPublished),
+            description: self.desc ?? ""
         )
     }
 } 

@@ -42,6 +42,36 @@ final class BookmarkManager: ObservableObject {
         objectWillChange.send()
     }
     
+    func updateBook(_ book: Book, description: String) {
+        let context = coreDataManager.context
+        
+        let fetchRequest: NSFetchRequest<BookmarkEntity> = BookmarkEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", book.key)
+        
+        do {
+            let books = try context.fetch(fetchRequest)
+            books[0].setValue(description, forKey: "desc")
+            coreDataManager.saveContext()
+        } catch {
+            print("Error removing bookmark: \(error)")
+        }
+    }
+    
+    func fetchBook(key: String) -> Book? {
+        let context = coreDataManager.context
+        let fetchRequest: NSFetchRequest<BookmarkEntity> = BookmarkEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", key)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results[0].toBook()
+        } catch {
+            print("Error removing bookmark: \(error)")
+        }
+        
+        return nil
+    }
+    
     private func bookmarkBook(_ book: Book) {
         guard !isBookmarked(book) else { return }
         
@@ -55,6 +85,7 @@ final class BookmarkManager: ObservableObject {
         bookmarkEntity.hits = Int64(book.ratingsCount ?? 0)
         bookmarkEntity.yearPublished = Int16(book.firstPublishYear ?? 0)
         bookmarkEntity.dateAdded = Date()
+        bookmarkEntity.desc = book.description
         
         coreDataManager.saveContext()
     }
